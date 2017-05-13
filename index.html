@@ -8,12 +8,15 @@
 <header><h1 id="title">Game of 25</h1></header>
 <main>
     <div id="about-area">
-        <h2 class="expand" data-expand="rules-list">Rules</h2>
-        <ul id="rules-list">
-            <li>Drag a piece of the puzzle, and drop it where you want it.</li>
-            <li>A piece can only be dropped on its on x- or y-axis</li>
-            <li>Complete the game in as few moves as possible</li>
-        </ul>
+        <input id="rules-section" type="checkbox" class="expandable-state">
+        <label for="rules-section">
+            <h2 class="expandable-header">Rules</h2>
+            <ul id="rules-list" class="expandable-body">
+                <li>Drag a piece of the puzzle, and drop it where you want it.</li>
+                <li>A piece can only be dropped on its on x- or y-axis</li>
+                <li>Complete the game in as few moves as possible</li>
+            </ul>
+        </label>
     </div>
     <div id="game-area">
         <div id="game-board">

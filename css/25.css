@@ -29,7 +29,34 @@ main, header {
 footer {
     background: black;
     color: white;
-    width: 100%;
+    width: calc(100% - 40px);
     padding: 20px;
     text-align: center;
+}
+
+input.expandable-state {
+    display: none;
+}
+
+input[type=checkbox] + label .expandable-header:before{
+    content: '+';
+    border: 1px solid black;
+    width: 0.7em;
+    line-height: 0.8em;
+    padding-bottom: 0.1em;
+    display: inline-block;
+    margin-right: 3px;
+    text-align: center;
+}
+
+input[type=checkbox]:checked + label .expandable-header:before{
+    content: '-';
+}
+
+input[type=checkbox] + label .expandable-body {
+    display: none;
+}
+
+input[type=checkbox]:checked + label .expandable-body {
+    display: block;
 }
