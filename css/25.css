@@ -1,12 +1,29 @@
 /* General definitions */
-html, body {
-    height: 100%;
+
+* {
     border: 0;
     padding: 0;
     margin: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    padding-bottom: 100px;
+    min-height: calc(100% - 100px);
+    min-width: 750px;
+    /*height: calc(100% - 200px);*/
 }
 
 main, header {
+    position: relative;
     min-width: 500px;
     max-width: 900px;
     width: 60%;
@@ -14,12 +31,57 @@ main, header {
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
     background: black;
     color: white;
     width: calc(100% - 40px);
     padding: 20px;
     text-align: center;
 }
+
+/* Branding */
+#pixie-logo {
+    position: absolute;
+    top: 0;
+    right: -100px;
+    width: 100px;
+}
+
+#lazy-coder {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 200px;
+    z-index: -1;
+}
+
+/* Some nice layout options */
+
+h1 {
+    font-size: 2em;
+    padding: 20px 0 10px 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    padding: 10px 0 5px 0;
+}
+
+ul {
+    margin: 1em;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: inherit;
+    text-decoration: underline;
+}
+
 
 /* Expandable section */
 
@@ -50,10 +112,11 @@ input[type=checkbox]:checked + label .expandable-body {
     display: block;
 }
 
+
 /* Game definitions */
 
 #control-area {
-    width: calc(80% - 40px);
+    width: calc(100% - 40px);
     padding: 20px;
     text-align: center;
 }
@@ -61,6 +124,8 @@ input[type=checkbox]:checked + label .expandable-body {
 #start-button {
     padding: 10px 20px;
 
+    border-radius: 5px;
+    border: 1px solid black;
     background: #f9fff9;
     color: black;
 
@@ -75,7 +140,7 @@ input[type=checkbox]:checked + label .expandable-body {
 
 #game-area {
     position: relative;
-    width: 80%;
+    width: 100%;
 
     background: black;
     color: white;
@@ -127,7 +192,9 @@ input[type=checkbox]:checked + label .expandable-body {
     text-shadow: #00f 1px 1px 15px;
 }
 
+
 /* Initial tile state */
+
 #n00, #n01, #n02, #n03, #n04 {  top: 0; }
 #n05, #n06, #n07, #n08, #n09 {  top: 20%; }
 #n10, #n11, #n12, #n13, #n14 {  top: 40%; }

@@ -15,7 +15,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
     };
 
     elm.addEvent(startButton, 'click', gameStart);
-    
+
     function gameStart() {
 
         initElements();
@@ -59,6 +59,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
             debug.log("Error: A tile is already being dragged!\n", draggedTile);
             return;
         }
+
         // Enable dropability on elements on the same x- and y-axes and change their color?
         debug.log("onDragStart\n", evt);
         draggedTile = evt.target ? evt.target : evt.srcElement;
