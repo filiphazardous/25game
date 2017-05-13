@@ -101,10 +101,13 @@ input[type=checkbox]:checked + label .expandable-body {
     position: absolute;
 
     border: 1px solid;
-    border-top-color: #ddd;
-    border-left-color: #ccc;
-    border-right-color: #888;
-    border-bottom-color: #777;
+    border-color:  #ddd #888 #777 #ccc;
+
+    transition: left 300ms, top 300ms;
+}
+
+.game-tile.drop-zone {
+    background-color: #222;
 }
 
 .game-tile-inner {
