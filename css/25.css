@@ -52,6 +52,27 @@ input[type=checkbox]:checked + label .expandable-body {
 
 /* Game definitions */
 
+#control-area {
+    width: calc(80% - 40px);
+    padding: 20px;
+    text-align: center;
+}
+
+#start-button {
+    padding: 10px 20px;
+
+    background: #f9fff9;
+    color: black;
+
+    font-size: 1.5em;
+    font-family: "Arial Black", Helvetica, sans-serif;
+    font-weight: bolder;
+}
+
+#score-area h2 {
+    margin-bottom: 0;
+}
+
 #game-area {
     position: relative;
     width: 80%;
@@ -94,7 +115,7 @@ input[type=checkbox]:checked + label .expandable-body {
     text-align: center;
 
     font-size: 3em;
-    font-family: "Arial Black", Helvetica;
+    font-family: "Arial Black", Helvetica, sans-serif;
     font-weight: bolder;
     text-shadow: #00f 1px 1px 15px;
 }

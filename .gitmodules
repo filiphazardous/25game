@@ -1,0 +1,3 @@
+[submodule "js/hazUtils.js"]
+	path = js/hazUtils.js
+	url = git@github.com:filiphazardous/hazUtils.js
