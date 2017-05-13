@@ -110,6 +110,10 @@ input[type=checkbox]:checked + label .expandable-body {
     background-color: #222;
 }
 
+.game-tile.dragged-tile {
+    transition: left 0ms, top 0ms;
+}
+
 .game-tile-inner {
     position: absolute;
     top: 50%;

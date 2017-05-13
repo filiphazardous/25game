@@ -15,10 +15,10 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
     };
 
     elm.addEvent(startButton, 'click', gameStart);
-
-
+    
     function gameStart() {
 
+        initElements();
         scrambleElements();
 
         if (gameStats.running === false) {
@@ -32,11 +32,25 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         updateScore();
     }
 
-    function gameEnd() {
+    function gameEnd(success) {
 
         // Remove dragability on all elements
         elm.remAttr(gameTiles, 'draggable');
         elm.remEvent(gameTiles, 'dragstart', onDragStart);
+
+        if (success) {
+            alert("You made it!\nScore: " + gameStats.score + "\n(Lower is better.)");
+        }
+    }
+
+    function initElements() {
+
+        for (var i = gameTiles.length - 1; i >= 0; --i) {
+            gameTiles[i].data = {
+                tile: null,
+                goalIndex: i
+            }
+        }
     }
 
     function onDragStart(evt) {
@@ -51,12 +65,13 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         debug.log(draggedTile.data);
 
         elm.addEvent(draggedTile, 'dragend', onDragEnd);
+        elm.addClasses(draggedTile, 'dragged-tile');
 
         for (var i = gameTiles.length - 1; i >= 0; --i) {
-            if (gameTiles[i].data.index === draggedTile.data.index) continue;
+            if (gameTiles[i].data.tile.index === draggedTile.data.tile.index) continue;
 
-            if (gameTiles[i].data.col === draggedTile.data.col
-                || gameTiles[i].data.row === draggedTile.data.row) {
+            if (gameTiles[i].data.tile.col === draggedTile.data.tile.col
+                || gameTiles[i].data.tile.row === draggedTile.data.tile.row) {
                 dropTiles.push(gameTiles[i]);
             }
         }
@@ -76,7 +91,11 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         dropTiles = [];
 
         elm.remEvent(draggedTile, 'dragend', onDragEnd);
-        draggedTile = null;
+
+        setTimeout(function IIFE() {
+            elm.remClasses(draggedTile, 'dragged-tile');
+            draggedTile = null;
+        }, 1);
     }
 
     function onDragOver(evt) {
@@ -85,25 +104,85 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         evt.preventDefault();
     }
 
+    function findDropTile(evt) {
+
+        var candidateNames = ['target', 'srcElement'];
+        var parentCandidates = ['parentNode', 'parentElement'];
+
+        for (var i = candidateNames.length - 1; i >= 0; --i) {
+            if (!evt[candidateNames[i]]) continue;
+            debug.log('Checking', candidateNames[i]);
+            var candidateNode = evt[candidateNames[i]];
+
+            if (candidateNode.data && candidateNode.data.tile) {
+                return candidateNode;
+            }
+
+            for (var j = parentCandidates.length - 1; j >= 0; --j) {
+                if (!candidateNode[parentCandidates[j]]) continue;
+                debug.log('Checking parent', parentCandidates[j]);
+                var parentNode = candidateNode[parentCandidates[j]];
+
+                if (parentNode.data && parentNode.data.tile) {
+                    return parentNode;
+                }
+            }
+        }
+
+        var e = {
+            name: 'NO_SUITABLE_NODE',
+            message: 'No suitable drop target found!',
+            data: evt
+        };
+        debug.log("Throwing\n", e);
+        throw(e);
+    }
+
     function onDrop(evt) {
 
         // Update positions, remove dropability, and change colors back
+        var targetTile = findDropTile(evt);
+
         evt.preventDefault();
         debug.log("onDrop\n", evt);
 
+        // Move the dragged tile to its new position
+        var newIndex = targetTile.data.tile.index;
+        var startIndex = draggedTile.data.tile.index;
 
+        gameTiles.splice(startIndex, 1);
+        gameTiles.splice(newIndex, 0, draggedTile);
+
+        var rows = draggedTile.data.tile.row - targetTile.data.tile.row;
+        var incr = rows / Math.abs(rows);
+
+        for (var i = 0, row = 0; i < Math.abs(rows); ++i, row += incr) {
+            var srcIndex = row * gameBoardWidth + newIndex + incr;
+            var targetIndex = srcIndex + incr * gameBoardWidth - incr;
+
+            var tile = gameTiles.splice(srcIndex, 1)[0];
+            gameTiles.splice(targetIndex, 0, tile);
+        }
 
         updateElementPos();
 
         ++gameStats.score;
         updateScore();
 
-        setTimeout(checkIfComplete, 200);
+        setTimeout(function IIFE() {
+            if (checkIfComplete()) {
+                gameEnd(true);
+            }
+        }, 200);
     }
 
     function checkIfComplete() {
 
         // Loop through elements and check if expected position in array is the same as actual position
+        for (var i = gameTiles.length - 1; i >= 0; --i) {
+            if (gameTiles[i].data.tile.index !== gameTiles[i].data.goalIndex) return false;
+        }
+        return true;
     }
 
     function scrambleElements() {
@@ -113,7 +192,6 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         while (gameTiles.length) {
             var index = Math.floor(Math.random() * gameTiles.length);
             var tile = gameTiles.splice(index, 1)[0];
-            tile.data = {};
             newGameTiles.push(tile);
         }
 
@@ -129,14 +207,14 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         var rows = gameTiles.length / gameBoardWidth;
         var tileHeight = 100 / rows;
 
-        debug.log(gameTiles);
+        //debug.log(gameTiles);
         for (var i = gameTiles.length - 1; i >= 0; --i) {
-            debug.log(i, gameTiles.length, gameTiles[i]);
+            //debug.log(i, gameTiles.length, gameTiles[i]);
             var left = ((i % gameBoardWidth) * tileWidth) + '%';
             var top = (tileHeight * Math.floor(i / gameBoardWidth)) + '%';
             gameTiles[i].style.left = left;
             gameTiles[i].style.top = top;
-            gameTiles[i].data = {
+            gameTiles[i].data.tile = {
                 index: i,
                 row: Math.floor(i / gameBoardWidth),
                 col: i % gameBoardWidth
@@ -145,8 +223,6 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
     }
 
     function updateScore() {
-        scoreDisplay.innerText = document.createTextNode(gameStats.score);
+        scoreDisplay[0].innerText = '' + gameStats.score;
     }
-
-
 });
