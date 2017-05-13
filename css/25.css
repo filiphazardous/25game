@@ -1,0 +1,35 @@
+html, body {
+    height: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+main, header {
+    min-width: 500px;
+    max-width: 900px;
+    width: 60%;
+    margin: 0 auto;
+}
+
+#game-area {
+    position: relative;
+    width: 80%;
+
+    background: black;
+    color: white;
+}
+
+#game-area:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+footer {
+    background: black;
+    color: white;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
