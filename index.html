@@ -13,14 +13,20 @@
     <div id="about-area">
         <input id="rules-section" type="checkbox" class="expandable-state">
         <label for="rules-section">
-            <h2 class="expandable-header">Rules</h2>
-            <ul id="rules-list" class="expandable-body">
-                <li>Drag a piece of the puzzle, and drop it where you want it.</li>
-                <li>A piece can only be dropped on its on x- or y-axis</li>
-                <li>Complete the game in as few moves as possible</li>
-            </ul>
+            <h2 class="expandable-header fancy-checkbox">Rules</h2>
+            <div class="expandable-body">
+                <ul id="rules-list">
+                    <li>Drag a piece of the puzzle, and drop it where you want it.</li>
+                    <li>A piece can only be dropped on its on x- or y-axis</li>
+                    <li>Complete the game in as few moves as possible</li>
+                </ul>
+            </div>
         </label>
     </div>
+
+    <!-- This is a good place to place checkbox state variables -->
+    <input id="trainer-state" class="hidden-state" type="checkbox" checked/>
+
     <div id="game-area">
         <div id="game-board">
             <div id="n00" class="game-tile"><div class="game-tile-inner">1</div></div>
@@ -54,10 +60,12 @@
             <div id="n24" class="game-tile"><div class="game-tile-inner">25</div></div>
         </div>
     </div>
+    <label id="for-trainer-state" for="trainer-state" class="fancy-checkbox">Using the trainers</label><br/>
     <div id="score-area">
         <h2>Score: <span id="score">0</span></h2>
     </div>
     <div id="control-area">
+
         <button id="start-button">Start playing</button>
     </div>
 </main>

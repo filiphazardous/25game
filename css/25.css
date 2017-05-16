@@ -19,7 +19,6 @@ body {
     padding-bottom: 100px;
     min-height: calc(100% - 100px);
     min-width: 750px;
-    /*height: calc(100% - 200px);*/
 }
 
 main, header {
@@ -85,19 +84,24 @@ a:hover {
 
 /* Expandable section */
 
+.fancy-checkbox:before {
+    border: 1px solid black;
+    width: 0.7em;
+    line-height: 0.8em;
+    min-height: 0.8em;
+    display: inline-block;
+    margin-right: 3px;
+    text-align: center;
+    padding: 2px;
+}
+
 input.expandable-state {
     display: none;
 }
 
 input[type=checkbox] + label .expandable-header:before{
+    padding-top: 0;
     content: '+';
-    border: 1px solid black;
-    width: 0.7em;
-    line-height: 0.8em;
-    padding-bottom: 0.1em;
-    display: inline-block;
-    margin-right: 3px;
-    text-align: center;
 }
 
 input[type=checkbox]:checked + label .expandable-header:before{
@@ -105,11 +109,13 @@ input[type=checkbox]:checked + label .expandable-header:before{
 }
 
 input[type=checkbox] + label .expandable-body {
-    display: none;
+    height: 0;
+    margin: -8px 0;
+    transition: height 200ms, margin 200ms;
 }
 
 input[type=checkbox]:checked + label .expandable-body {
-    display: block;
+    height: calc(32px + 3em);
 }
 
 
@@ -193,8 +199,35 @@ input[type=checkbox]:checked + label .expandable-body {
     font-family: "Arial Black", Helvetica, sans-serif;
     font-weight: bolder;
     text-shadow: #00f 1px 1px 15px;
+    opacity: 0.5;
+    transition: opacity 200ms;
 }
 
+/* Some display state magic */
+.hidden-state {
+    display: none;
+}
+
+/* If #trainer-state is checked, display the numbers */
+input#trainer-state[type=checkbox]:checked ~ #game-area #game-board .game-tile > .game-tile-inner {
+    opacity: 0.5;
+}
+.game-tile-inner {
+    opacity: 0;
+}
+
+[for=trainer-state]:before {
+    margin-top: 2px;
+    padding-top: 4px;
+    padding-bottom: 0;
+    margin-bottom: -2px;
+    content: '\2713';
+    color: transparent;
+}
+
+input#trainer-state[type=checkbox]:checked ~ [for=trainer-state]:before {
+    color: inherit;
+}
 
 /* Initial tile state */
 
