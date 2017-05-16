@@ -161,14 +161,17 @@ input[type=checkbox]:checked + label .expandable-body {
 }
 
 .game-tile {
-    width: calc(20% - 4px);
-    height: calc(20% - 4px);
+    width: calc(20% - 2px);
+    height: calc(20% - 2px);
     position: absolute;
 
     border: 1px solid;
     border-color:  #ddd #888 #777 #ccc;
 
     transition: left 300ms, top 300ms;
+
+    background-image: url("../img/winter.jpg");
+    background-size: 600%;
 }
 
 .game-tile.drop-zone {
@@ -195,14 +198,14 @@ input[type=checkbox]:checked + label .expandable-body {
 
 /* Initial tile state */
 
-#n00, #n01, #n02, #n03, #n04 {  top: 0; }
-#n05, #n06, #n07, #n08, #n09 {  top: 20%; }
-#n10, #n11, #n12, #n13, #n14 {  top: 40%; }
-#n15, #n16, #n17, #n18, #n19 {  top: 60%; }
-#n20, #n21, #n22, #n23, #n24 {  top: 80%; }
+#n00, #n01, #n02, #n03, #n04 {  top: 0; background-position-y:  0;}
+#n05, #n06, #n07, #n08, #n09 {  top: 20%; background-position-y: 20%;}
+#n10, #n11, #n12, #n13, #n14 {  top: 40%; background-position-y: 40%;}
+#n15, #n16, #n17, #n18, #n19 {  top: 60%; background-position-y: 60%;}
+#n20, #n21, #n22, #n23, #n24 {  top: 80%; background-position-y: 80%;}
 
-#n00, #n05, #n10, #n15, #n20 {  left: 0; }
-#n01, #n06, #n11, #n16, #n21 {  left: 20%; }
-#n02, #n07, #n12, #n17, #n22 {  left: 40%; }
-#n03, #n08, #n13, #n18, #n23 {  left: 60%; }
-#n04, #n09, #n14, #n19, #n24 {  left: 80%; }
+#n00, #n05, #n10, #n15, #n20 {  left: 0; background-position-x:  0;}
+#n01, #n06, #n11, #n16, #n21 {  left: 20%; background-position-x: 20%;}
+#n02, #n07, #n12, #n17, #n22 {  left: 40%; background-position-x: 40%;}
+#n03, #n08, #n13, #n18, #n23 {  left: 60%; background-position-x: 60%;}
+#n04, #n09, #n14, #n19, #n24 {  left: 80%; background-position-x: 80%;}
