@@ -189,6 +189,7 @@ input[type=checkbox]:checked + label .expandable-body {
 }
 
 .game-tile-inner {
+    display: block;
     position: absolute;
     top: 50%;
     transform: translate(0, -50%);
@@ -199,7 +200,7 @@ input[type=checkbox]:checked + label .expandable-body {
     font-family: "Arial Black", Helvetica, sans-serif;
     font-weight: bolder;
     text-shadow: #00f 1px 1px 15px;
-    opacity: 0.5;
+    opacity: 0;
     transition: opacity 200ms;
 }
 
@@ -211,9 +212,6 @@ input[type=checkbox]:checked + label .expandable-body {
 /* If #trainer-state is checked, display the numbers */
 input#trainer-state[type=checkbox]:checked ~ #game-area #game-board .game-tile > .game-tile-inner {
     opacity: 0.5;
-}
-.game-tile-inner {
-    opacity: 0;
 }
 
 [for=trainer-state]:before {
