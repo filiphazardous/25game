@@ -5,6 +5,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
     var startButton = elm.get('#start-button');
     var scoreDisplay = elm.get('#score');
     var gameTiles = elm.get('.game-tile');
+    var gameBoard = elm.get('#game-board');
     var gameBoardWidth = 5;
     var draggedTile = null;
     var dropTiles = [];
@@ -24,6 +25,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         if (gameStats.running === false) {
             elm.setAttr(gameTiles, 'draggable', true);
             elm.addEvent(gameTiles, 'dragstart', onDragStart);
+            elm.addEvent(gameTiles, 'touchstart', onTouchStart);
         }
 
         gameStats.score = 0;
@@ -51,6 +53,61 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
                 goalIndex: i
             }
         }
+    }
+
+    function onTouchStart(evt) {
+
+
+        if (draggedTile) {
+            debug.log("Error: A tile is already being dragged!\n", draggedTile);
+            return;
+        }
+
+        debug.log("onTouchStart\n", evt);
+        draggedTile = evt.target ? evt.target : evt.srcElement;
+        debug.log(draggedTile.data);
+
+        elm.addEvent(draggedTile, 'touchend', onTouchEnd);
+        elm.addEvent(draggedTile, 'touchcancel', onTouchEnd);
+        elm.addEvent(gameBoard, 'touchmove', onTouchMove);
+        elm.addClasses(draggedTile, 'dragged-tile');
+
+
+        for (var i = gameTiles.length - 1; i >= 0; --i) {
+            if (gameTiles[i].data.tile.index === draggedTile.data.tile.index) continue;
+
+            if (gameTiles[i].data.tile.col === draggedTile.data.tile.col
+                || gameTiles[i].data.tile.row === draggedTile.data.tile.row) {
+                dropTiles.push(gameTiles[i]);
+            }
+        }
+
+        elm.addClasses(dropTiles, 'drop-zone');
+
+        // TODO: copy the dragged tile, and store the pos of the touch ptr
+    }
+
+    function onTouchEnd(evt) {
+
+        debug.log("onTouchgEnd called\n", evt);
+
+        elm.remClasses(dropTiles, 'drop-zone');
+        dropTiles = [];
+
+        elm.remEvent(draggedTile, 'touchend', onTouchEnd);
+        elm.remEvent(draggedTile, 'touchcancel', onTouchEnd);
+        elm.remEvent(gameBoard, 'touchmove', onTouchMove);
+
+        // TODO: Determine over which tile the dragged tile is held
+
+        setTimeout(function anon() {
+            elm.remClasses(draggedTile, 'dragged-tile');
+            draggedTile = null;
+        }, 1);
+    }
+
+    function onTouchMove(evt) {
+        // TODO: Move the copy of the dragged tile with the same delta as the touch ptr
     }
 
     function onDragStart(evt) {
@@ -93,7 +150,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
 
         elm.remEvent(draggedTile, 'dragend', onDragEnd);
 
-        setTimeout(function IIFE() {
+        setTimeout(function anon() {
             elm.remClasses(draggedTile, 'dragged-tile');
             draggedTile = null;
         }, 1);
@@ -170,7 +227,7 @@ require(['hazUtils.js/general/debug', 'hazUtils.js/web/dom/elements'], function 
         ++gameStats.score;
         updateScore();
 
-        setTimeout(function IIFE() {
+        setTimeout(function anon() {
             if (checkIfComplete()) {
                 gameEnd(true);
             }
